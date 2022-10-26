@@ -2,17 +2,34 @@
 
 namespace App\Table;
 
-class Article
-{
-    // Quand une variable n'est pas connue
-    // Appel de cette fonction : 
-    // $post->url === $post->getUrl();
-    // $post->extrait === $post->getExtrait();
+use App\App;
 
-    public function __get($key){
-        $method = 'get' . ucfirst($key);
-        $this->$key = $this->$method();
-        return $this->$key;
+class Article extends Table
+{
+    
+    // Récupère les derniers articles 
+    public static function getLast(){
+
+        // return App::getDb()->query('SELECT * FROM articles', __CLASS__);
+        // return App::getDb()->query('SELECT * FROM articles', 'App\Table\Article');
+        return self::query("
+        
+            SELECT articles.id, articles.titre, articles.contenu, categories.titre as categorie 
+            FROM articles 
+            LEFT JOIN categories 
+                ON categorie_id = categories.id
+        ");
+    }
+
+    public static function lastByCategory($categorie_id){
+        return self::query("
+        
+            SELECT articles.id, articles.titre, articles.contenu, categories.titre as categorie 
+            FROM articles 
+            LEFT JOIN categories 
+                ON categorie_id = categories.id
+            WHERE categorie_id = ?
+        ", [$categorie_id]);
     }
 
     public function getUrl(){      

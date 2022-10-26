@@ -9,9 +9,6 @@ if (isset($_GET['p'])) {
     $p = 'home';
 }
 
-// Initialisation des objets
-$db = new App\Database('blog_poo');
-
 ob_start();
 // Tout ce qui affiché est stocké dans une variable : $content
 
@@ -22,7 +19,9 @@ if ($p == 'home') {
 } elseif ($p == 'article') {
 
     require '../pages/single.php';
+} elseif ($p == 'categorie') {
 
+    require '../pages/categorie.php';
 }
 
 $content = ob_get_clean();

@@ -36,11 +36,18 @@ class Database
     }
 
     // La fonction query prend le statement en premier params, et la classe utilisée
-    public function query($statement, $class_name)
+    public function query($statement, $class_name, $one = false)
     {
         $req = $this->getPDO()->query($statement);
         // La fonction query() renvoie un PDOStatement
-        $datas = $req->fetchAll(PDO::FETCH_CLASS, $class_name);
+
+        $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        
+        if($one){
+            $datas = $req->fetch();
+        } else {
+            $datas = $req->fetchAll();
+        }
         return $datas;
     }
 
